@@ -1,0 +1,17 @@
+/* Ensure the font is defined */
+@font-face {
+  font-family: 'NHaasGroteskDSPro-65Md' !important;
+  src: url('/fonts/NHaasGroteskDSPro-65Md.woff2') format('woff2'); /* Adjust path */
+  font-weight: normal;
+  font-style: normal;
+} 
+body {
+  margin: 0;
+  /* Apply the font here */
+  font-family: 'NHaasGroteskDSPro-65Md', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+#carousel{
+  max-height: 500px;
+}
