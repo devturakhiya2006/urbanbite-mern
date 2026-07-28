@@ -8,7 +8,7 @@ export default function MyOrder() {
     const fetchMyOrder = async () => {
         try {
             console.log(localStorage.getItem('userEmail'));
-            const res = await fetch("http://localhost:5000/api/myOrderData", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/myOrderData`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

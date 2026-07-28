@@ -2,56 +2,56 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 export default function SignUp() {
-    const [credentials, setcredentials] = useState({
-        name: "",
-        email: "",
-        password: "",
-        geolocation: ""
+  const [credentials, setcredentials] = useState({
+    name: "",
+    email: "",
+    password: "",
+    geolocation: ""
+  })
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(JSON.stringify({
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+      location: credentials.geolocation
+    }))
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/createuser`, {
+      method: 'POST',
+      headers: {
+        'Content-type': "application/json"
+      },
+      body: JSON.stringify({
+        name: credentials.name,
+        email: credentials.email,
+        password: credentials.password,
+        location: credentials.geolocation
+      })
     })
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(JSON.stringify({
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password,
-            location: credentials.geolocation
-        }))
+    const json = await response.json()
+    console.log(json);
 
-        const response = await fetch("http://localhost:5000/api/createuser", {
-            method: 'POST',
-            headers: {
-                'Content-type': "application/json"
-            },
-            body: JSON.stringify({
-                name: credentials.name,
-                email: credentials.email,
-                password: credentials.password,
-                location: credentials.geolocation
-            })
-        })
-
-        const json = await response.json()
-        console.log(json);
-
-        if (!response.ok) {
-            console.log(json.errors);
-            alert("Please enter valid details");
-            return;
-        }
-
-        if (!json.success) {
-            alert("Enter valid credentials")
-        }
+    if (!response.ok) {
+      console.log(json.errors);
+      alert("Please enter valid details");
+      return;
     }
 
-    const onChange = (e) => {
-        setcredentials({ ...credentials, [e.target.name]: e.target.value })
+    if (!json.success) {
+      alert("Enter valid credentials")
     }
+  }
 
-    return (
-        <div className="ub-auth-page">
-            <style>{`
+  const onChange = (e) => {
+    setcredentials({ ...credentials, [e.target.name]: e.target.value })
+  }
+
+  return (
+    <div className="ub-auth-page">
+      <style>{`
          .ub-auth-page {
     min-height: 100vh;
     box-sizing: border-box;
@@ -229,89 +229,89 @@ export default function SignUp() {
           }
         `}</style>
 
-            <div className="ub-auth-shell">
-                <div className="ub-auth-visual">
-                    <div className="ub-auth-visual-text">
-                        <div className="ub-auth-visual-tag">Fresh · Fast · Local</div>
-                        <div className="ub-auth-visual-title">
-                            Your next favourite meal<br />is just one order away.
-                        </div>
-                    </div>
-                </div>
-
-                <div className="ub-auth-form-side">
-                    <div className="ub-auth-brand">URBAN<span>BITE</span></div>
-                    <div className="ub-auth-heading">Create your account</div>
-                    <div className="ub-auth-subtitle">
-                        Join us and start ordering delicious food.
-                    </div>
-
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <label htmlFor="name" className="ub-form-label">Name</label>
-                            <input
-                                type="text"
-                                className="ub-form-input"
-                                name="name"
-                                value={credentials.name}
-                                onChange={onChange}
-                                id="name"
-                                placeholder="Enter your name"
-                            />
-                        </div>
-
-                        <div className="mb-3 mt-4">
-                            <label htmlFor="email" className="ub-form-label">Email address</label>
-                            <input
-                                type="email"
-                                className="ub-form-input"
-                                name="email"
-                                value={credentials.email}
-                                onChange={onChange}
-                                id="email"
-                                placeholder="you@example.com"
-                            />
-                            <div className="ub-form-help">
-                                We'll never share your email with anyone else.
-                            </div>
-                        </div>
-
-                        <div className="mb-3 mt-4">
-                            <label htmlFor="password" className="ub-form-label">Password</label>
-                            <input
-                                type="password"
-                                className="ub-form-input"
-                                name="password"
-                                value={credentials.password}
-                                onChange={onChange}
-                                id="password"
-                                placeholder="Create a password"
-                            />
-                        </div>
-
-                        <div className="mb-3 mt-4">
-                            <label htmlFor="geolocation" className="ub-form-label">Address</label>
-                            <input
-                                type="text"
-                                className="ub-form-input"
-                                name="geolocation"
-                                value={credentials.geolocation}
-                                onChange={onChange}
-                                id="geolocation"
-                                placeholder="Enter your address"
-                            />
-                        </div>
-
-                        <button type="submit" className="ub-submit-btn">
-                            Create Account
-                        </button>
-
-                        <div className="ub-signup-row">
-                            Already a user? <Link to="/login">Login here</Link>
-                        </div>
-                    </form>
-                </div>
+      <div className="ub-auth-shell">
+        <div className="ub-auth-visual">
+          <div className="ub-auth-visual-text">
+            <div className="ub-auth-visual-tag">Fresh · Fast · Local</div>
+            <div className="ub-auth-visual-title">
+              Your next favourite meal<br />is just one order away.
             </div>
+          </div>
         </div>
-    )
+
+        <div className="ub-auth-form-side">
+          <div className="ub-auth-brand">URBAN<span>BITE</span></div>
+          <div className="ub-auth-heading">Create your account</div>
+          <div className="ub-auth-subtitle">
+            Join us and start ordering delicious food.
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="name" className="ub-form-label">Name</label>
+              <input
+                type="text"
+                className="ub-form-input"
+                name="name"
+                value={credentials.name}
+                onChange={onChange}
+                id="name"
+                placeholder="Enter your name"
+              />
+            </div>
+
+            <div className="mb-3 mt-4">
+              <label htmlFor="email" className="ub-form-label">Email address</label>
+              <input
+                type="email"
+                className="ub-form-input"
+                name="email"
+                value={credentials.email}
+                onChange={onChange}
+                id="email"
+                placeholder="you@example.com"
+              />
+              <div className="ub-form-help">
+                We'll never share your email with anyone else.
+              </div>
+            </div>
+
+            <div className="mb-3 mt-4">
+              <label htmlFor="password" className="ub-form-label">Password</label>
+              <input
+                type="password"
+                className="ub-form-input"
+                name="password"
+                value={credentials.password}
+                onChange={onChange}
+                id="password"
+                placeholder="Create a password"
+              />
+            </div>
+
+            <div className="mb-3 mt-4">
+              <label htmlFor="geolocation" className="ub-form-label">Address</label>
+              <input
+                type="text"
+                className="ub-form-input"
+                name="geolocation"
+                value={credentials.geolocation}
+                onChange={onChange}
+                id="geolocation"
+                placeholder="Enter your address"
+              />
+            </div>
+
+            <button type="submit" className="ub-submit-btn">
+              Create Account
+            </button>
+
+            <div className="ub-signup-row">
+              Already a user? <Link to="/login">Login here</Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )
 }

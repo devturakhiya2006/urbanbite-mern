@@ -1,64 +1,64 @@
 import React, { useState } from 'react'
-  import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-  export default function Login() {
-    const [credentials, setcredentials] = useState({ email: "", password: "" })
-    const navigate = useNavigate()
+export default function Login() {
+  const [credentials, setcredentials] = useState({ email: "", password: "" })
+  const navigate = useNavigate()
 
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      try {
-        const response = await fetch("http://localhost:5000/api/loginuser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password
-          })
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/loginuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password
         })
+      })
 
-        const json = await response.json()
+      const json = await response.json()
 
-        if (!response.ok || !json.success) {
-          let message = "Enter valid email and password."
+      if (!response.ok || !json.success) {
+        let message = "Enter valid email and password."
 
-          if (json.errors) {
-            if (Array.isArray(json.errors)) {
-              message = json.errors.map((err) => err.msg || err.message || "Invalid details").join("\n")
-            } else if (typeof json.errors === "string") {
-              message = json.errors
-            }
-          } else if (json.error) {
-            message = json.error
+        if (json.errors) {
+          if (Array.isArray(json.errors)) {
+            message = json.errors.map((err) => err.msg || err.message || "Invalid details").join("\n")
+          } else if (typeof json.errors === "string") {
+            message = json.errors
           }
-
-          alert(message)
-          return
+        } else if (json.error) {
+          message = json.error
         }
 
-        localStorage.setItem("userEmail", credentials.email)
-        localStorage.setItem("authToken", json.authToken)
-
-        navigate("/", { replace: true })
-      } catch (error) {
-        console.error("Login error:", error)
-        alert("Unable to connect to the server. Make sure your backend is running on port 5000.")
+        alert(message)
+        return
       }
-    }
 
-    const onChange = (e) => {
-      setcredentials({
-        ...credentials,
-        [e.target.name]: e.target.value
-      })
-    }
+      localStorage.setItem("userEmail", credentials.email)
+      localStorage.setItem("authToken", json.authToken)
 
-    return (
-      <div className="ub-auth-page">
-        <style>{`
+      navigate("/", { replace: true })
+    } catch (error) {
+      console.error("Login error:", error)
+      alert("Unable to connect to the server. Make sure your backend is running on port 5000.")
+    }
+  }
+
+  const onChange = (e) => {
+    setcredentials({
+      ...credentials,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  return (
+    <div className="ub-auth-page">
+      <style>{`
           .ub-auth-page {
             min-height: 100vh;
             box-sizing: border-box;
@@ -232,63 +232,63 @@ import React, { useState } from 'react'
           }
         `}</style>
 
-        <div className="ub-auth-shell">
-          <div className="ub-auth-visual">
-            <div className="ub-auth-visual-text">
-              <div className="ub-auth-visual-tag">Fresh · Fast · Local</div>
-              <div className="ub-auth-visual-title">
-                Good food finds<br />its way back to you.
-              </div>
+      <div className="ub-auth-shell">
+        <div className="ub-auth-visual">
+          <div className="ub-auth-visual-text">
+            <div className="ub-auth-visual-tag">Fresh · Fast · Local</div>
+            <div className="ub-auth-visual-title">
+              Good food finds<br />its way back to you.
             </div>
-          </div>
-
-          <div className="ub-auth-form-side">
-            <div className="ub-auth-brand">URBAN<span>BITE</span></div>
-            <div className="ub-auth-heading">Login to your account</div>
-            <div className="ub-auth-subtitle">
-              Enter your details to continue ordering.
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="email" className="ub-form-label">Email address</label>
-                <input
-                  id="email"
-                  type="email"
-                  className="ub-form-input"
-                  name="email"
-                  value={credentials.email}
-                  onChange={onChange}
-                  placeholder="you@example.com"
-                  required
-                />
-                <div className="ub-form-help">
-                  We'll never share your email with anyone else.
-                </div>
-              </div>
-
-              <div className="mb-3 mt-4">
-                <label htmlFor="password" className="ub-form-label">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  className="ub-form-input"
-                  name="password"
-                  value={credentials.password}
-                  onChange={onChange}
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-
-              <button type="submit" className="ub-submit-btn">Login</button>
-
-              <div className="ub-signup-row">
-                New here? <Link to="/createuser">Create an account</Link>
-              </div>
-            </form>
           </div>
         </div>
+
+        <div className="ub-auth-form-side">
+          <div className="ub-auth-brand">URBAN<span>BITE</span></div>
+          <div className="ub-auth-heading">Login to your account</div>
+          <div className="ub-auth-subtitle">
+            Enter your details to continue ordering.
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="email" className="ub-form-label">Email address</label>
+              <input
+                id="email"
+                type="email"
+                className="ub-form-input"
+                name="email"
+                value={credentials.email}
+                onChange={onChange}
+                placeholder="you@example.com"
+                required
+              />
+              <div className="ub-form-help">
+                We'll never share your email with anyone else.
+              </div>
+            </div>
+
+            <div className="mb-3 mt-4">
+              <label htmlFor="password" className="ub-form-label">Password</label>
+              <input
+                id="password"
+                type="password"
+                className="ub-form-input"
+                name="password"
+                value={credentials.password}
+                onChange={onChange}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+
+            <button type="submit" className="ub-submit-btn">Login</button>
+
+            <div className="ub-signup-row">
+              New here? <Link to="/createuser">Create an account</Link>
+            </div>
+          </form>
+        </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
