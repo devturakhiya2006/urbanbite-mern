@@ -26,6 +26,7 @@ mongoDB();
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
+
 // CORS
 app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:5173",  // ✅ CHANGED: allow your deployed frontend URL too
